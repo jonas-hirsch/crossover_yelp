@@ -1,0 +1,78 @@
+[{
+    "restaurant_id": "1234",
+    "restaurant_name": "Berlin",
+    "avg_rating": "4.5",
+    "adress": {
+        "city": "Berlin",
+        "postal_code": "34423",
+        "street_name": "Kurfürstendamm",
+        "street_nr": "1"
+    },
+    "price": "$$",
+    "cuisine": "sushi",
+    "tags": ["Takes Reservations", "Offers Takeout"]
+}]
+
+
+[
+    {
+      "restaurant_id" : "string",
+      "restaurant_name" : "string",
+      "avg_rating": "",
+      "adress": {
+        "city" : "",
+        "postal_code": "",
+        "street_name": "",
+        "street_nr": "",
+  
+  
+      },
+      "price": number,
+      "cuisine": [german,chinese,sushi,italian],
+      "tags": ["a","b","c","d", ...]
+    },
+    {
+  
+    }
+  ]
+  
+  
+  possible endpoints:
+  
+  // .get : //backend/restaurants --> all the results in an order to be specified (top10?)
+  // .get : //backend/city --> all the resataurants in one city
+  // .get : // backend/city/tags --> all the restuarants with a certain tag in one particular city
+
+
+Takes Reservations
+Offers Delivery
+Offers Takeout
+Outdoor Seating
+
+
+database type: MongoDB? => Mongoose => MongoDB Atlas
+
+
+
+
+
+EXAMPLE API RESULT:
+
+
+[
+    {
+      "restaurant_id" : "1234",
+      "restaurant_name" : "Berlin",
+      "avg_rating": "4.5",
+      "adress": {
+        "city" : "Berlin",
+        "postal_code": "34423",
+        "street_name": "Kurfürstendamm",
+        "street_nr": "1",
+      },
+      "price": "$$",
+      "cuisine": "sushi",
+      "tags": ["Takes Reservations","Offers Takeout"]
+        }
+  ]
+
