@@ -39,9 +39,16 @@
   
   possible endpoints:
   
+  // .post : //backend/restaurants --> saves one restaurant with data in the body
   // .get : //backend/restaurants --> all the results in an order to be specified (top10?)
   // .get : //backend/city --> all the resataurants in one city
   // .get : // backend/city/tags --> all the restuarants with a certain tag in one particular city
+
+
+  // .get : //backend/restaurants --> all the results in an order to be specified (top10?)
+  // .get : //backend/:city --> all the restaurants in one city
+  // .get : // backend/:city/:tags --> all the restuarants with a certain tag in one particular city
+
 
 
 Takes Reservations
