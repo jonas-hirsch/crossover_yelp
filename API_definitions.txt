@@ -1,41 +1,4 @@
-[{
-    "restaurant_id": "1234",
-    "restaurant_name": "Berlin",
-    "avg_rating": "4.5",
-    "adress": {
-        "city": "Berlin",
-        "postal_code": "34423",
-        "street_name": "Kurfürstendamm",
-        "street_nr": "1"
-    },
-    "price": "$$",
-    "cuisine": "sushi",
-    "tags": ["Takes Reservations", "Offers Takeout"]
-}]
-
-
-[
-    {
-      "restaurant_id" : "string",
-      "restaurant_name" : "string",
-      "avg_rating": "",
-      "adress": {
-        "city" : "",
-        "postal_code": "",
-        "street_name": "",
-        "street_nr": "",
-  
-  
-      },
-      "price": number,
-      "cuisine": [german,chinese,sushi,italian],
-      "tags": ["a","b","c","d", ...]
-    },
-    {
-  
-    }
-  ]
-  
+ 
   
   possible endpoints:
   
@@ -57,29 +20,20 @@ Offers Takeout
 Outdoor Seating
 
 
-database type: MongoDB? => Mongoose => MongoDB Atlas
+EXAMPLE api/restaurants POST:
 
 
-
-
-
-EXAMPLE API RESULT:
-
-
-[
-    {
-      "restaurant_id" : "1234",
-      "restaurant_name" : "Berlin",
-      "avg_rating": "4.5",
-      "adress": {
-        "city" : "Berlin",
-        "postal_code": "34423",
-        "street_name": "Kurfürstendamm",
-        "street_nr": "1",
-      },
-      "price": "$$",
-      "cuisine": "sushi",
-      "tags": ["Takes Reservations","Offers Takeout"]
-        }
-  ]
-
+{
+    "restaurant_id": 1337,
+    "restaurant_name": "Münchner Weingarten",
+    "avg_rating": 4.3,
+    "address": {
+        "city": "München",
+        "postal_code": 32123,
+        "street_name": "Schöneparkstraße",
+        "street_nr": 42
+    },
+    "price": "$",
+    "cuisine": ["german"],
+    "tags": ["Takes Reservations", "Parking", "Outdoor Seating"]
+}

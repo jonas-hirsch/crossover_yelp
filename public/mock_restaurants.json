@@ -2,7 +2,7 @@
     "restaurant_id": "1234",
     "restaurant_name": "Berlin",
     "avg_rating": "4.5",
-    "adress": {
+    "address": {
         "city": "Berlin",
         "postal_code": "34423",
         "street_name": "Kurfürstendamm",
@@ -16,7 +16,7 @@
     "restaurant_id": "1337",
     "restaurant_name": "Münchner Weingarten",
     "avg_rating": "4.3",
-    "adress": {
+    "address": {
         "city": "München",
         "postal_code": "32123",
         "street_name": "Schöneparkstraße",
@@ -30,7 +30,7 @@
     "restaurant_id": "4321",
     "restaurant_name": "Steakhouse Stuttgart",
     "avg_rating": "4.6",
-    "adress": {
+    "address": {
         "city": "Stuttgart",
         "postal_code": "12345",
         "street_name": "Keineahnungplatz",

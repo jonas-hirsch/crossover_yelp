@@ -35,9 +35,19 @@ app.use(function (err, req, res, next) {
 app.get("/restaurants", (req, res) => {
   // SPL INJECTION!!! Ben is gonna do it!
   db.query("SELECT * FROM restaurants")
-    .then((restaurant_result) => {
-      console.log(restaurant_result.rows);
-      res.send(restaurant_result.rows);
+    .then((raw_restaurants_result) => {
+      const formatted_restaurants_result = raw_restaurants_result.rows.map(x => {
+        let formattedX = x;
+        parsedAddress = JSON.parse(x.address);
+        formattedX.address = parsedAddress;
+        parsedCuisine = JSON.parse(x.cuisine);
+        formattedX.cuisine = parsedCuisine;
+        parsedTags = JSON.parse(x.tags);
+        formattedX.tags = parsedTags;
+        return formattedX})
+      // for each row format cuisine & tags encode from JSON
+      console.log(formatted_restaurants_result);
+      res.send(formatted_restaurants_result);
     })
     .catch((e) => {
       console.log(e);
@@ -83,6 +93,7 @@ app.get("/:city/:tags", async (req, res) => {
 });
 
 app.post("/restaurants", async (req, res) => {
+  try{
   console.log(req.body);
   const { restaurant_name, avg_rating, address, price, cuisine, tags } =
     req.body;
@@ -114,6 +125,10 @@ app.post("/restaurants", async (req, res) => {
       console.log(dberr.stack);
       res.sendStatus(500);
     });
+  } catch (e){
+    console.log(e)
+    res.sendStatus(500);
+  }
 });
 
 module.exports = app;
