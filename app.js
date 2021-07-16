@@ -87,6 +87,35 @@ app.get("/:city", async (req, res) => {
     });
 });
 
+app.get("/restaurants/:city", async (req, res) => {
+  const city = req.params.city;
+
+  const getAllRestaurantsInCity = {
+    text: `
+    SELECT * FROM restaurants WHERE city_name=$1;
+    `,
+    values: [city.toLowerCase()],
+  };
+  db.query(getAllRestaurantsInCity)
+    .then((data) => {
+      console.log({ by_city_first_result: data.rows[0] });
+      let formattedRows = [];
+      for (const rowIdx in data.rows) {
+        const unformattedRow = data.rows[rowIdx];
+        let formattedRow = unformattedRow;
+        formattedRow.address = JSON.parse(unformattedRow.address);
+        formattedRow.cuisine = JSON.parse(unformattedRow.cuisine);
+        formattedRow.tags = JSON.parse(unformattedRow.tags);
+        formattedRows.push(formattedRow);
+      }
+      res.send(formattedRows);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+});
+
 app.get("/:city/:tags", async (req, res) => {
   try {
     console.log(`Called /:city/:tags`);
@@ -196,6 +225,81 @@ app.get("/:city/:tags", async (req, res) => {
     }
     res.send(formattedRows);
     */
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
+
+app.get("/restaurants/:city/:tags", async (req, res) => {
+  try {
+    console.log(`Called /:city/:tags`);
+    const city = req.params.city;
+    const tags = req.params.tags;
+    console.log(`with tags: ${tags}`);
+    console.log({city : city});
+    console.log({tags : tags});
+    let filterTags = [];
+    let multiTag = false;
+    let splitTags = null;
+    try {
+      splitTags = tags.split("&");
+      console.log(`Split tags parameters by & sign: ${JSON.stringify(splitTags)}`);
+      if (splitTags.length >= 2) {
+        multiTag = true;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+    if (!multiTag) {
+      filterTags.push(tags);
+    } else {
+      filterTags = splitTags;
+    }
+      //TODO:multiple tags querying database for restaurants
+      //first select by city for one rows result
+      const getAllRestaurantsInCity = {
+        text: `
+      SELECT * FROM restaurants WHERE city_name=$1;
+      `,
+        values: [city.toLowerCase()],
+      };
+      db.query(getAllRestaurantsInCity)
+        .then((data) => {
+          //console.log({ by_city_first_result: data.rows[0] });
+          //console.log({all_restaurants_by_city : data.rows});
+          const filteredRestaurantsByTags = data.rows.map((oneRestaurantsByCityRow) => {
+            console.log(`Mapping one city-filtered restaurant result row.`)
+            const allTagsCurrentRowUnformatted = JSON.parse(oneRestaurantsByCityRow.cuisine).concat(
+              JSON.parse(oneRestaurantsByCityRow.tags)
+            );
+            const allTagsCurrentRow = allTagsCurrentRowUnformatted.map((oneTagElement) => {
+              return oneTagElement.toLowerCase();
+            })
+            let allFilterTagsMatched = true;
+            for (const tagIdx in filterTags) {
+              console.log(`Checking if ${JSON.stringify(allTagsCurrentRow)} contains ${JSON.stringify(filterTags[tagIdx].toLowerCase())}`)
+              if (
+                !allTagsCurrentRow.includes(filterTags[tagIdx].toLowerCase())
+              ) {
+                allFilterTagsMatched = false;
+              }
+              console.log(`Restaurant still valid?${allFilterTagsMatched}`);
+            }
+            if (allFilterTagsMatched) {
+              console.log(`All filters matched correctly. Filters:${JSON.stringify(filterTags)}`)
+              let formattedRestaurantByCityRow = oneRestaurantsByCityRow;
+              formattedRestaurantByCityRow.address = JSON.parse(oneRestaurantsByCityRow.address);
+              formattedRestaurantByCityRow.cuisine = JSON.parse(oneRestaurantsByCityRow.cuisine);
+              formattedRestaurantByCityRow.tags = JSON.parse(oneRestaurantsByCityRow.tags);
+              return oneRestaurantsByCityRow;
+            }
+          });
+          console.log(`Returning filtered by city and tags: ${filteredRestaurantsByTags}`);
+          res.send(filteredRestaurantsByTags);
+        });
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
