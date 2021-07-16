@@ -204,11 +204,10 @@ app.get("/:city/:tags", async (req, res) => {
 
 app.post("/restaurants", async (req, res) => {
   try {
-    console.log(req.body);
+    console.log({ req_body : req.body});
     const {
       restaurant_name,
       avg_rating,
-      city_name,
       address,
       price,
       cuisine,
@@ -218,6 +217,8 @@ app.post("/restaurants", async (req, res) => {
     const formatted_cuisine = JSON.stringify(cuisine);
     const formatted_tags = JSON.stringify(tags);
 
+    const city_name = address.city;
+
     const newRestaurant = {
       text: `
   INSERT INTO restaurants (restaurant_name, avg_rating, city_name, address, price, cuisine, tags)
@@ -226,7 +227,7 @@ app.post("/restaurants", async (req, res) => {
       values: [
         restaurant_name,
         avg_rating,
-        city_name.toLowerCase(),
+        city_name,
         formatted_address,
         price,
         formatted_cuisine,
@@ -236,9 +237,10 @@ app.post("/restaurants", async (req, res) => {
 
     db.query(newRestaurant.text, newRestaurant.values)
       .then((dbres) => {
-        console.log({ restaurant_entry: dbres.rows[0] });
+        //console.log({ restaurant_entry: dbres.rows[0] });
         const created_restaurant_id = dbres.rows[0].restaurant_id;
         let tags_list = tags.concat(cuisine);
+        /**
         for (const t in tags_list) {
           const newTagRestaurantRelation = {
             text: `
@@ -252,15 +254,16 @@ app.post("/restaurants", async (req, res) => {
             newTagRestaurantRelation.values
           )
             .then((relres) => {
-              console.log({ tag_to_restaurant_entry: relres.rows[0] });
+              //console.log({ tag_to_restaurant_entry: relres.rows[0] });
             })
             .catch((err) => {
               console.log(err.stack);
               res.sendStatus(500);
             });
         }
+        */
 
-        res.sendStatus(201);
+        res.send({created: dbres.rows[0]});
       })
       .catch((dberr) => {
         console.log(dberr.stack);
