@@ -321,7 +321,7 @@ app.post("/restaurants", async (req, res) => {
     const formatted_cuisine = JSON.stringify(cuisine);
     const formatted_tags = JSON.stringify(tags);
 
-    const city_name = address.city;
+    const city_name = address.city.toLowerCase();
 
     const newRestaurant = {
       text: `
