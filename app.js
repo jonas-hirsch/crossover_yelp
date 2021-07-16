@@ -145,6 +145,10 @@ app.get("/:city/:tags", async (req, res) => {
             }
             if (allFilterTagsMatched) {
               console.log(`All filters matched correctly. Filters:${JSON.stringify(filterTags)}`)
+              let formattedRestaurantByCityRow = oneRestaurantsByCityRow;
+              formattedRestaurantByCityRow.address = JSON.parse(oneRestaurantsByCityRow.address);
+              formattedRestaurantByCityRow.cuisine = JSON.parse(oneRestaurantsByCityRow.cuisine);
+              formattedRestaurantByCityRow.tags = JSON.parse(oneRestaurantsByCityRow.tags);
               return oneRestaurantsByCityRow;
             }
           });
